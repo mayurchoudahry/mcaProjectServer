@@ -20,7 +20,7 @@ app.post('/generate-quiz', async (req, res) => {
     return res.status(400).json({ message: 'Topic and questionType are required.' });
   }
 
-  let prompt = `Generate 30 ${questionType} questions on the topic of "${topic}".`;
+  let prompt = `Generate 30  ${questionType} questions on the topic of "${topic}" dont genereate anything else dont wtire anything else only wirte questions and option .`;
 
   if (questionType === 'MCQ') {
     prompt += ' Each question should have 4 options and one correct answer.';
