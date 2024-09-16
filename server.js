@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { GoogleGenerativeAI } = require('@google/generative-ai'); // Import Google Generative AI SDK
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 // Initialize Google Generative AI
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 app.post('/generate-quiz', async (req, res) => {
@@ -20,7 +20,12 @@ app.post('/generate-quiz', async (req, res) => {
     return res.status(400).json({ message: 'Topic and questionType are required.' });
   }
 
-  let prompt = `Generate 30  ${questionType} questions on the topic of "${topic}" dont genereate anything else dont wtire anything else only wirte questions and option .`;
+  let prompt = `Generate 30 ${questionType} questions on the topic of "${topic}". Each question should have 4 options and one correct answer and give the aswer key always. dont generate anything else except question,option and answer . dont write anything else generate this type of respose  '**1. What is the capital of France?',
+  '    1) Paris',
+  '    2) London',
+  '    3) Rome',
+  '    4) Berlin',
+  '    Answer: Paris',  `;
 
   if (questionType === 'MCQ') {
     prompt += ' Each question should have 4 options and one correct answer.';
@@ -33,7 +38,8 @@ app.post('/generate-quiz', async (req, res) => {
   try {
     // Generate content using Google Generative AI model
     const result = await model.generateContent(prompt);
-    res.json({ questions: result.response.text().split('\n') }); // Adjust based on actual response format
+    const questions = result.response.text().split('\n'); // Adjust based on actual response format
+    res.json({ questions });
   } catch (error) {
     console.error('Error generating quiz:', error.message);
     res.status(500).json({ message: 'An error occurred while generating the quiz.', error: error.message });
