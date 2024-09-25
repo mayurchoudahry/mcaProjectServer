@@ -1,8 +1,10 @@
 const express = require('express');
-const { generateQuiz } = require('../controllers/quizController');
+const { generateQuiz,submitQuizResults, getUserProgress } = require('../controllers/quizController');
 
 const router = express.Router();
 
 router.post('/generate-quiz', generateQuiz);
+router.post('/submit-results', submitQuizResults); // New route for submitting results
+router.get('/progress/:userId', getUserProgress); // New route for getting user progress
 
 module.exports = router;
