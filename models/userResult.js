@@ -5,7 +5,7 @@ const UserResultSchema = new mongoose.Schema({
   userId: { 
     type: mongoose.Schema.Types.ObjectId, 
     required: true, 
-    ref: 'User' // Ensure you have a User model defined
+    ref: 'user' // Ensure you have a User model defined
   },
   topic: { 
     type: String, 

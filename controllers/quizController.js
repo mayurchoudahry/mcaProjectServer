@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const UserResult = require('../models/userResult'); // Import the UserResult model
+const User = require('../models/userModel'); 
 
 // Initialize Google Generative AI
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
@@ -67,7 +68,7 @@ const getUserProgress = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const results = await UserResult.find({ userId }).populate('userId', 'username'); // Populate with user info if needed
+    const results = await UserResult.find({ userId }).populate('userId', 'username'); // Populate with user info
     res.json(results);
   } catch (error) {
     console.error('Error fetching user progress:', error.message);
